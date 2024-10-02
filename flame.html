@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLAMES Love Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('bgimage.jpeg');
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            ;
+            padding: 20px;
+            background-color: white;
+            border-radius: 40px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+            width: 500px;
+            margin: 0 auto;
+        }
+        input {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        button {
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            background-color: #ff4081;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #e73370;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff4081;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>FLAME</h2>
+        <p>Enter your name and your crush's name to find your FLAMES result!</p>
+
+        <form id="flamesForm">
+            <input type="text" id="yourName" placeholder="Your Name" required>
+            <input type="text" id="crushName" placeholder="Crush's Name" required>
+            <button type="submit">Calculate FLAMES</button>
+        </form>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function removeCommonLetters(name1, name2) {
+            let arr1 = name1.split('');
+            let arr2 = name2.split('');
+            
+            for (let i = 0; i < arr1.length; i++) {
+                for (let j = 0; j < arr2.length; j++) {
+                    if (arr1[i] === arr2[j]) {
+                        arr1.splice(i, 1);
+                        arr2.splice(j, 1);
+                        i--;
+                        break;
+                    }
+                }
+            }
+            return arr1.length + arr2.length; // total remaining letters
+        }
+
+        function calculateFLAMES(count) {
+            let flames = ['F', 'L', 'A', 'M', 'E', 'S'];
+            let idx = 0;
+
+            while (flames.length > 1) {
+                idx = (idx + count - 1) % flames.length;
+                flames.splice(idx, 1);
+            }
+
+            return flames[0];
+        }
+
+        function getFLAMESResult(letter) {
+            switch(letter) {
+                case 'F': return "Damn bro, sadly you guys are just FRIENDS" ;
+                case 'L': return "Lucky , you both are LOVERS.";
+                case 'A': return "Uhuh It's an ATTRACTION.";
+                case 'M': return "OMG you guys getting MARRIED.";
+                case 'E': return "You got beef with them, yall are ENEMIES";
+                case 'S': return "Why tf is your SIBLING your crush?";
+                default: return "";
+            }
+        }
+
+        document.getElementById('flamesForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            let yourName = document.getElementById('yourName').value.toLowerCase().replace(/\s+/g, '');
+            let crushName = document.getElementById('crushName').value.toLowerCase().replace(/\s+/g, '');
+
+            if (yourName === "" || crushName === "") {
+                alert("Please enter both names.");
+                return;
+            }
+
+            let remainingCount = removeCommonLetters(yourName, crushName);
+            let flamesLetter = calculateFLAMES(remainingCount);
+            let flamesResult = getFLAMESResult(flamesLetter);
+
+            document.getElementById('result').textContent = "Your FLAMES result: " + flamesResult;
+        });
+    </script>
+
+</body>
+</html>
